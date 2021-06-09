@@ -1,4 +1,9 @@
 /// <reference types="node" />
+import htmlMinifier from "html-minifier";
+export declare const default_minimize_config: {
+    collapseWhitespace: boolean;
+    removeComments: boolean;
+};
 export declare class Mail {
     private html;
     private css;
@@ -9,4 +14,5 @@ export declare class Mail {
      */
     constructor(html: string | Buffer, css?: string | string[]);
     generate(): string;
+    minimize(options?: htmlMinifier.Options): Mail;
 }

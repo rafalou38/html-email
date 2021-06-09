@@ -1,4 +1,11 @@
 import { readFileSync } from "fs";
+import htmlMinifier from "html-minifier";
+
+export const default_minimize_config = {
+  collapseWhitespace: true,
+  removeComments: true,
+};
+
 
 export class Mail {
   private html: string;
@@ -23,5 +30,9 @@ export class Mail {
   }
   generate(): string {
     return this.html;
+  }
+  minimize(options: htmlMinifier.Options = default_minimize_config): Mail {
+    this.html = htmlMinifier.minify(this.html, options);
+    return this;
   }
 }
