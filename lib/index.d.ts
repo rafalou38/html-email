@@ -12,7 +12,8 @@ export declare class Mail {
      * @param html Path of an html file or html content
      * @param css path of a css file to apply
      */
-    constructor(html: string | Buffer, css?: string | string[]);
+    constructor(html: string | Buffer, css?: string[]);
     generate(): string;
     minimize(options?: htmlMinifier.Options): Mail;
+    addCSS(css: string | Buffer): void;
 }

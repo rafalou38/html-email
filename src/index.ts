@@ -6,26 +6,29 @@ export const default_minimize_config = {
   removeComments: true,
 };
 
+function getContent(data: string | Buffer) {
+  if (Buffer.isBuffer(data)) {
+    // data is a buffer
+    return data.toString();
+  } else if (data.match(/^[^<>]+?$/i)) {
+    // data is a path
+    return readFileSync(data).toString();
+  } else {
+    // data is plaintext
+    return data;
+  }
+}
 
 export class Mail {
   private html: string;
-  private css: string | string[] | undefined;
+  private css: string[] | undefined;
   /**
    *
    * @param html Path of an html file or html content
    * @param css path of a css file to apply
    */
-  constructor(html: string | Buffer, css?: string | string[]) {
-    if (Buffer.isBuffer(html)) {
-      // html is a html buffer
-      this.html = html.toString();
-    } else if (html.match(/^[^<>]+?\.html$/i)) {
-      // html is a path
-      this.html = readFileSync(html).toString();
-    } else {
-      // html is html code
-      this.html = html;
-    }
+  constructor(html: string | Buffer, css?: string[]) {
+    this.html = getContent(html);
     this.css = css;
   }
   generate(): string {
@@ -34,5 +37,8 @@ export class Mail {
   minimize(options: htmlMinifier.Options = default_minimize_config): Mail {
     this.html = htmlMinifier.minify(this.html, options);
     return this;
+  }
+  addCSS(css: string | Buffer) {
+    this.css = getContent(css);
   }
 }

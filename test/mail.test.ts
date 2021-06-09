@@ -6,7 +6,6 @@ const sample1 = readFileSync(sample1_path);
 const sample1_min_path = "./test/data/sample1.min.html";
 const sample1_min = readFileSync(sample1_min_path);
 
-describe("Mail", () => {
 describe("Load html", () => {
   it("should be able to read Html from a path", () => {
     expect(new Mail(sample1_path).generate()).toBe(sample1.toString());
