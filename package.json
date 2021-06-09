@@ -1,0 +1,35 @@
+{
+  "name": "html-email",
+  "description": "",
+  "version": "0.0.1",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "jest",
+    "watch": "tsc --watch --pretty"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rafalou38/html-email.git"
+  },
+  "keywords": [
+    "mail",
+    "email",
+    "inliner",
+    "newsletter"
+  ],
+  "author": "Rafael Martinez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rafalou38/html-email/issues"
+  },
+  "homepage": "https://github.com/rafalou38/html-email#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "jest": "^27.0.4",
+    "typescript": "^4.3.2"
+  }
+}
