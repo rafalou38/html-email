@@ -9,11 +9,12 @@ export declare class Mail {
     private css;
     /**
      *
-     * @param html Path of an html file or html content
-     * @param css path of a css file to apply
+     * @param {string | Buffer} html - Path of an html file or html content
+     * @param {string[]} css - path/content of css styles to apply
      */
     constructor(html: string | Buffer, css?: string[]);
     generate(): string;
     minimize(options?: htmlMinifier.Options): Mail;
-    addCSS(css: string | Buffer): void;
+    addCSS(css: string | Buffer): this;
+    inlineCSS(): Promise<this>;
 }

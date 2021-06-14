@@ -1,5 +1,6 @@
 import { readFileSync } from "fs";
 import htmlMinifier from "html-minifier";
+import inlineCSS from "inline-css";
 
 export const default_minimize_config = {
   collapseWhitespace: true,
@@ -21,15 +22,15 @@ function getContent(data: string | Buffer) {
 
 export class Mail {
   private html: string;
-  private css: string[] | undefined;
+  private css: string[];
   /**
    *
-   * @param html Path of an html file or html content
-   * @param css path of a css file to apply
+   * @param {string | Buffer} html - Path of an html file or html content
+   * @param {string[]} css - path/content of css styles to apply
    */
   constructor(html: string | Buffer, css?: string[]) {
     this.html = getContent(html);
-    this.css = css;
+    this.css = css?.map(getContent) || [];
   }
   generate(): string {
     return this.html;
@@ -39,6 +40,14 @@ export class Mail {
     return this;
   }
   addCSS(css: string | Buffer) {
-    this.css = getContent(css);
+    this.css?.push(getContent(css));
+    return this;
+  }
+  async inlineCSS() {
+    this.html = await inlineCSS(this.html, {
+      extraCss: this.css.join("\n"),
+      url: "example.com",
+    });
+    return this;
   }
 }
