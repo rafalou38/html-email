@@ -11,7 +11,7 @@ function getContent(data: string | Buffer) {
   if (Buffer.isBuffer(data)) {
     // data is a buffer
     return data.toString();
-  } else if (data.match(/^[^<>]+?$/i)) {
+  } else if (data.match(/^[^<>:]+?$/i)) {
     // data is a path
     return readFileSync(data).toString();
   } else {
@@ -21,6 +21,7 @@ function getContent(data: string | Buffer) {
 }
 
 export class Mail {
+  private pending: Promise<void> | null = null;
   private html: string;
   private css: string[];
   /**
@@ -32,22 +33,35 @@ export class Mail {
     this.html = getContent(html);
     this.css = css?.map(getContent) || [];
   }
-  generate(): string {
+  async generate(): Promise<string> {
+    await this.pending;
     return this.html;
   }
   minimize(options: htmlMinifier.Options = default_minimize_config): Mail {
-    this.html = htmlMinifier.minify(this.html, options);
+    const minimize = () => {
+      this.html = htmlMinifier.minify(this.html, options);
+    };
+    if (this.pending) {
+      this.pending.then(minimize);
+    }
+    minimize();
     return this;
   }
   addCSS(css: string | Buffer) {
     this.css?.push(getContent(css));
     return this;
   }
-  async inlineCSS() {
-    this.html = await inlineCSS(this.html, {
-      extraCss: this.css.join("\n"),
-      url: "example.com",
+  inlineCSS() {
+    this.pending = new Promise((resolve, _) => {
+      inlineCSS(this.html, {
+        extraCss: this.css.join("\n"),
+        url: "example.com",
+      }).then((inlined) => {
+        this.html = inlined;
+        resolve();
+      });
     });
+
     return this;
   }
 }

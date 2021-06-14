@@ -5,6 +5,7 @@ export declare const default_minimize_config: {
     removeComments: boolean;
 };
 export declare class Mail {
+    private pending;
     private html;
     private css;
     /**
@@ -13,8 +14,8 @@ export declare class Mail {
      * @param {string[]} css - path/content of css styles to apply
      */
     constructor(html: string | Buffer, css?: string[]);
-    generate(): string;
+    generate(): Promise<string>;
     minimize(options?: htmlMinifier.Options): Mail;
     addCSS(css: string | Buffer): this;
-    inlineCSS(): Promise<this>;
+    inlineCSS(): this;
 }
