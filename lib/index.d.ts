@@ -18,4 +18,5 @@ export declare class Mail {
     minimize(options?: htmlMinifier.Options): Mail;
     addCSS(css: string | Buffer): this;
     inlineCSS(): this;
+    inlineImages(): this;
 }
