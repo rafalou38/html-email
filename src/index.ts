@@ -36,7 +36,7 @@ function encodeImg(image: string): Promise<string> {
     } else if (image.match(/^[^<>:]+?$/i)) {
       const file = readFileSync(image);
       loadFile(file);
-    }
+    } else resolve(image);
   });
 }
 

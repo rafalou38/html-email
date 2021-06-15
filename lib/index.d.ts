@@ -14,7 +14,7 @@ export declare class Mail {
      * @param {string[]} css - path/content of css styles to apply
      */
     constructor(html: string | Buffer, css?: string[]);
-    generate(): Promise<string>;
+    generate(cb?: (html: string) => any): Promise<string>;
     minimize(options?: htmlMinifier.Options): Mail;
     addCSS(css: string | Buffer): this;
     inlineCSS(): this;
