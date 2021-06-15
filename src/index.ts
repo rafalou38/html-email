@@ -66,8 +66,11 @@ export class Mail {
     this.html = getContent(html);
     this.css = css?.map(getContent) || [];
   }
-  async generate(): Promise<string> {
+  async generate(cb?: (html: string) => any): Promise<string> {
     await Promise.all(this.pending);
+    if (cb) {
+      cb(this.html);
+    }
     return this.html;
   }
   minimize(options: htmlMinifier.Options = default_minimize_config): Mail {
